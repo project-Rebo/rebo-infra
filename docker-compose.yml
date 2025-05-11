@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:16
+    container_name: rebo-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file:
+      - .env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres-data:
