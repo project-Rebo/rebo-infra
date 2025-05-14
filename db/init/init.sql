@@ -11,19 +11,30 @@ CREATE TABLE store (
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE
-    );
+);
 
-    CREATE TABLE stg_store (
-        id BIGSERIAL PRIMARY KEY,
-        csv_id VARCHAR(255),
-        store_name VARCHAR(100),
-        road_address VARCHAR(255),
-        latitude VARCHAR(50),
-        longitude VARCHAR(50),
-        category_large VARCHAR(50),
-        category_middle VARCHAR(50),
-        category_small VARCHAR(50)
-    );
+CREATE TABLE stg_store (
+    id BIGSERIAL PRIMARY KEY,
+    csv_id VARCHAR(255),
+    store_name VARCHAR(100),
+    road_address VARCHAR(255),
+    latitude VARCHAR(50),
+    longitude VARCHAR(50),
+    category_large VARCHAR(50),
+    category_middle VARCHAR(50),
+    category_small VARCHAR(50)
+);
+
+CREATE TABLE members (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
 
 ALTER TABLE store ADD CONSTRAINT uq_store_csv_id UNIQUE (csv_id);
 
@@ -103,3 +114,4 @@ CREATE TABLE BATCH_JOB_EXECUTION_CONTEXT  (
 CREATE SEQUENCE BATCH_STEP_EXECUTION_SEQ MAXVALUE 9223372036854775807 NO CYCLE;
 CREATE SEQUENCE BATCH_JOB_EXECUTION_SEQ MAXVALUE 9223372036854775807 NO CYCLE;
 CREATE SEQUENCE BATCH_JOB_SEQ MAXVALUE 9223372036854775807 NO CYCLE;
+
