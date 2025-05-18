@@ -34,6 +34,16 @@ CREATE TABLE members (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE store_input (
+    id BIGSERIAL PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    category VARCHAR(20) NOT NULL,
+    radius INT NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES members(id)
+);
 
 
 ALTER TABLE store ADD CONSTRAINT uq_store_csv_id UNIQUE (csv_id);
