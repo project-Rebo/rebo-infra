@@ -47,6 +47,21 @@ CREATE TABLE store_input (
     FOREIGN KEY (member_id) REFERENCES members(id)
 );
 
+CREATE TABLE report (
+    id BIGSERIAL PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    store_input_id BIGINT NOT NULL,
+    total_store_count INT NOT NULL,
+    density DECIMAL(8, 2) NOT NULL,
+    score BIGINT NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    comment TEXT,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES members(id),
+    FOREIGN KEY (store_input_id) REFERENCES store_input(id)
+);
+
 
 ALTER TABLE store ADD CONSTRAINT uq_store_csv_id UNIQUE (csv_id);
 
