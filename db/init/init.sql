@@ -1,18 +1,29 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 CREATE TABLE store (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     csv_id VARCHAR(255),
     road_address VARCHAR(255),
-    Latitude NUMERIC(9, 6) NOT NULL,
+    latitude NUMERIC(9, 6) NOT NULL,
     longitude NUMERIC(9, 6) NOT NULL,
     category_large VARCHAR(50),
     category_middle VARCHAR(50),
     category_small VARCHAR(50),
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE INDEX idx_store_category_large_name ON store (category_large, name);
+CREATE INDEX idx_store_category_middle_name ON store (category_middle, name);
+CREATE INDEX idx_store_category_small_name ON store (category_small, name);
+
+CREATE INDEX idx_store_location_gist
+ON store
+USING gist (
+  ST_SetSRID(ST_MakePoint(longitude, latitude), 4326)
 );
 
 CREATE TABLE stg_store (
@@ -42,8 +53,8 @@ CREATE TABLE store_input (
     location VARCHAR(255) NOT NULL,
     category VARCHAR(20) NOT NULL,
     radius INT NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (member_id) REFERENCES members(id)
 );
 
@@ -56,8 +67,8 @@ CREATE TABLE report (
     score BIGINT NOT NULL,
     status VARCHAR(20) NOT NULL,
     comment TEXT,
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (member_id) REFERENCES members(id),
     FOREIGN KEY (store_input_id) REFERENCES store_input(id)
 );
