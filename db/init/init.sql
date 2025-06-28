@@ -58,7 +58,18 @@ CREATE TABLE store_input (
     FOREIGN KEY (member_id) REFERENCES members(id)
 );
 
-CREATE TABLE report (
+CREATE TABLE regions (
+    id BIGSERIAL PRIMARY KEY,
+    store_input_id BIGINT NOT NULL,
+    road_address VARCHAR(255) NOT NULL,
+    latitude NUMERIC(9, 6) NOT NULL,
+    longitude NUMERIC(9, 6) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (store_input_id) REFERENCES store_input(id) ON DELETE CASCADE
+);
+
+CREATE TABLE reports (
     id BIGSERIAL PRIMARY KEY,
     member_id BIGINT NOT NULL,
     store_input_id BIGINT NOT NULL,
@@ -66,7 +77,7 @@ CREATE TABLE report (
     density DECIMAL(8, 2) NOT NULL,
     score BIGINT NOT NULL,
     status VARCHAR(20) NOT NULL,
-    comment TEXT,
+    content TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (member_id) REFERENCES members(id),
