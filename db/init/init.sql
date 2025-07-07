@@ -26,18 +26,6 @@ USING gist (
   ST_SetSRID(ST_MakePoint(longitude, latitude), 4326)
 );
 
-CREATE TABLE stg_store (
-    id BIGSERIAL PRIMARY KEY,
-    csv_id VARCHAR(255),
-    store_name VARCHAR(100),
-    road_address VARCHAR(255),
-    latitude VARCHAR(50),
-    longitude VARCHAR(50),
-    category_large VARCHAR(50),
-    category_middle VARCHAR(50),
-    category_small VARCHAR(50)
-);
-
 CREATE TABLE members (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
